@@ -63,7 +63,7 @@
       apps = rec {
         server_tools = {
           type = "app";
-          program = "${self.packages.server_tools}/bin/rct";
+          program = "${self.packages.server_tools}/bin/validate_jeeves";
         };
         default = server_tools;
         hi = server_tools;
