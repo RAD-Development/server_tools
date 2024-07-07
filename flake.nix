@@ -29,7 +29,7 @@
 
         p2nix_defaults = {
           projectDir = ./.;
-          python = pkgs.python311;
+          python = pkgs.python312;
           overrides = poetry2nix.overrides.withDefaults (
             _: prev: lib.genAttrs [ "ruff" ] (package: prev.${package}.override { preferWheel = true; })
           );
@@ -51,7 +51,7 @@
               buildInputs = with pkgs; [
                 poetry
                 just
-                python311Packages.pudb
+                python312Packages.pudb
               ];
             });
 

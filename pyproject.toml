@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "server_tools" }]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 requests = "*"
 
 [tool.poetry.group.dev.dependencies]
@@ -28,7 +28,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 lint.select = ["ALL"]
-target-version = "py311"
+target-version = "py312"
 
 line-length = 120
 
