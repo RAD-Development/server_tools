@@ -2,6 +2,7 @@
 
 import logging
 import sys
+from os import environ
 
 from server_tools.common import configure_logger
 from server_tools.components import discord_notification, zpool_tests
@@ -9,7 +10,7 @@ from server_tools.components import discord_notification, zpool_tests
 
 def main() -> None:
     """Main."""
-    configure_logger(level="DEBUG")
+    configure_logger(level=environ.get("LOG_LEVEL", "INFO"))
     logging.info("Starting jeeves validation")
 
     errors: list[str] = []
@@ -22,7 +23,7 @@ def main() -> None:
         errors.append(f"Jeeves validation failed: {error}")
 
     if errors:
-        logging.error(f"Jeeves validation failed: \n{'\n'.join(errors)}")
+        logging.error(f"Jeeves validation failed: \n{"\n".join(errors)}")
         discord_notification("jeeves", errors)
 
         sys.exit(1)
