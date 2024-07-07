@@ -1,26 +1,33 @@
-"""Validate Jeeves."""
+"""Validate Jeevesjr."""
 
 import logging
 import sys
 
 from server_tools.common import configure_logger
-from server_tools.components import zpool_tests
+from server_tools.components import discord_notification, zpool_tests
 
 
 def main() -> None:
     """Main."""
     configure_logger(level="DEBUG")
-    logging.info("Starting jeeves validation")
+    logging.info("Starting Jeevesjr validation")
 
-    errors = zpool_tests(("Main",))
+    errors: list[str] = []
+    try:
+        if zpool_errors := zpool_tests(("Main",)):
+            errors.extend(zpool_errors)
+
+    except Exception as error:
+        logging.exception("Jeevesjr validation failed")
+        errors.append(f"Jeevesjr validation failed: {error}")
 
     if errors:
-        logging.error("Jeeves validation failed")
-        for error in errors:
-            logging.error(error)
+        logging.error(f"Jeevesjr validation failed: \n{'\n'.join(errors)}")
+        discord_notification("Jeevesjr validation", errors)
+
         sys.exit(1)
 
-    logging.info("Jeeves validation passed")
+    logging.info("Jeevesjr validation passed")
 
 
 if __name__ == "__main__":

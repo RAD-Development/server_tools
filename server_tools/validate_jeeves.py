@@ -4,7 +4,7 @@ import logging
 import sys
 
 from server_tools.common import configure_logger
-from server_tools.components import zpool_tests
+from server_tools.components import discord_notification, zpool_tests
 
 
 def main() -> None:
@@ -12,12 +12,19 @@ def main() -> None:
     configure_logger(level="DEBUG")
     logging.info("Starting jeeves validation")
 
-    errors = zpool_tests(("media", "storage", "torrenting"))
+    errors: list[str] = []
+    try:
+        if zpool_errors := zpool_tests(("media", "storage", "torrenting")):
+            errors.extend(zpool_errors)
+
+    except Exception as error:
+        logging.exception("Jeeves validation failed")
+        errors.append(f"Jeeves validation failed: {error}")
 
     if errors:
-        logging.error("Jeeves validation failed")
-        for error in errors:
-            logging.error(error)
+        logging.error(f"Jeeves validation failed: \n{'\n'.join(errors)}")
+        discord_notification("jeeves", errors)
+
         sys.exit(1)
 
     logging.info("Jeeves validation passed")

@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import logging
+from os import environ
 from re import search
 from typing import TYPE_CHECKING
+
+from requests import post
 
 from server_tools.common import bash_wrapper
 from server_tools.zfs import Zpool
@@ -38,3 +41,12 @@ def zpool_tests(pool_names: Sequence[str], zpool_capacity_threshold: int = 90) -
         errors.append("ZPool out of date")
 
     return errors
+
+
+def discord_notification(username: str, errors: Sequence[str]) -> None:
+    """Send a notification."""
+    logging.info("Sending discord notification")
+
+    errors = "\n".join(errors)
+
+    post(environ["WEBHOOK_URL"], json={"username": username, "content": errors}, timeout=10)
