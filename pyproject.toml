@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "server_tools"
+version = "0.1.0"
+description = ""
+authors = ["Richie Cahill <richie@tmmworkshop.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "server_tools" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+pytest-xdist = "*"
+
+# [tool.poetry.scripts]
+# rct = "server_tools:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+lint.select = ["ALL"]
+target-version = "py311"
+
+line-length = 120
+
+lint.ignore = [
+    "ANN101", # (PERM) This rule is deprecated
+    "ANN102", # (PERM) This rule is deprecated
+    "G004",   # (PERM) This is a performers nit
+    "COM812", # (TEMP) conflicts when used with the formatter
+    "ISC001", # (TEMP) conflicts when used with the formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+
+"tests/**" = [
+    "S101", # (perm) pytest needs asserts
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-builtins]
+builtins-ignorelist = ["id"]
+
+[tool.ruff.lint.pylint]
+max-args = 9

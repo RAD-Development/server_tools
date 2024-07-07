@@ -1,0 +1,15 @@
+{
+  "cSpell.words": [
+    "builtins",
+    "ignorelist",
+    "nixos",
+    "nixpkgs",
+    "numtide",
+    "pkgs",
+    "pudb",
+    "pydocstyle",
+    "pylint",
+    "pytest",
+    "xdist"
+  ]
+}
