@@ -12,7 +12,7 @@ def main() -> None:
     configure_logger(level="DEBUG")
     logging.info("Starting jeeves validation")
 
-    errors = zpool_tests(("media", "storage", "torrenting"))
+    errors = zpool_tests(("Main",))
 
     if errors:
         logging.error("Jeeves validation failed")
