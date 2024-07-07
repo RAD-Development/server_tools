@@ -36,13 +36,12 @@
         );
       };
     in {
-      packages = rec {
-        server_tools = poetry2nix.mkPoetryApplication p2nix_defaults;
-        default = server_tools;
+      packages = {
+        default = poetry2nix.mkPoetryApplication p2nix_defaults;
       };
 
-      devShells = rec {
-        server_tools =
+      devShells = {
+        default =
           (poetry2nix.mkPoetryEnv p2nix_defaults
             // {
               editablePackageSources = {
@@ -57,16 +56,11 @@
               python311Packages.pudb
             ];
           });
-        default = server_tools;
       };
 
-      apps = rec {
-        server_tools = {
+      apps.default = {
           type = "app";
           program = "${self.packages.server_tools}/bin/validate_jeeves";
         };
-        default = server_tools;
-        hi = server_tools;
-      };
     });
 }
