@@ -26,7 +26,6 @@ def main() -> None:
             "docker-filebrowser",
             "docker-grafana",
             "docker-haproxy",
-            "docker-postgres",
             "docker-prowlarr",
             "docker-qbit",
             "docker-qbitvpn",
