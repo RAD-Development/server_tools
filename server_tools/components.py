@@ -43,6 +43,19 @@ def zpool_tests(pool_names: Sequence[str], zpool_capacity_threshold: int = 90) -
     return errors
 
 
+def systemd_tests(service_names: Sequence[str]) -> list[str] | None:
+    """Test a systemd service."""
+    logging.info("Testing systemd service")
+
+    errors: list[str] = []
+    for service_name in service_names:
+        service_status = bash_wrapper(f"systemctl status {service_name}")
+        if service_status != "active":
+            errors.append(f"{service_name} is not running")
+
+    return errors
+
+
 def discord_notification(username: str, errors: Sequence[str]) -> None:
     """Send a notification."""
     logging.info("Sending discord notification")

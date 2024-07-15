@@ -5,7 +5,7 @@ import sys
 from os import environ
 
 from server_tools.common import configure_logger
-from server_tools.components import discord_notification, zpool_tests
+from server_tools.components import discord_notification, systemd_tests, zpool_tests
 
 
 def main() -> None:
@@ -17,6 +17,28 @@ def main() -> None:
     try:
         if zpool_errors := zpool_tests(("media", "storage", "torrenting")):
             errors.extend(zpool_errors)
+
+        services = (
+            "docker-arch_mirror",
+            "docker-bazarr",
+            "docker-cloud_flare_tunnel",
+            "docker-dnd_file_server",
+            "docker-filebrowser",
+            "docker-grafana",
+            "docker-haproxy",
+            "docker-postgres",
+            "docker-prowlarr",
+            "docker-qbit",
+            "docker-qbitvpn",
+            "docker-radarr",
+            "docker-sonarr",
+            "docker-uptime_kuma",
+            "docker",
+            "plex",
+            "snapshot_manager",
+        )
+        if systemd_errors := systemd_tests(services):
+            errors.extend(systemd_errors)
 
     except Exception as error:
         logging.exception("Jeeves validation failed")

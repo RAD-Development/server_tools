@@ -5,7 +5,7 @@ import sys
 from os import environ
 
 from server_tools.common import configure_logger
-from server_tools.components import discord_notification, zpool_tests
+from server_tools.components import discord_notification, systemd_tests, zpool_tests
 
 
 def main() -> None:
@@ -17,6 +17,10 @@ def main() -> None:
     try:
         if zpool_errors := zpool_tests(("ZFS-primary",)):
             errors.extend(zpool_errors)
+
+        services = ("docker",)
+        if systemd_errors := systemd_tests(services):
+            errors.extend(systemd_errors)
 
     except Exception as error:
         logging.exception("Jeeves validation failed")
