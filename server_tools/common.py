@@ -19,22 +19,18 @@ def configure_logger(level: str = "INFO") -> None:
     )
 
 
-def bash_wrapper(command: str) -> str:
+def bash_wrapper(command: str) -> tuple[str, int]:
     """Execute a bash command and capture the output.
 
     Args:
         command (str): The bash command to be executed.
 
     Returns:
-        Tuple[str, Optional[str], int]: A tuple containing the output of the command (stdout) as a string,
+        Tuple[str, int]: A tuple containing the output of the command (stdout) as a string,
         the error output (stderr) as a string (optional), and the return code as an integer.
     """
     # This is a acceptable risk
     process = Popen(command.split(), stdout=PIPE, stderr=PIPE)  # noqa: S603
-    output, error = process.communicate()
-    return_code = process.returncode
-    if return_code != 0:
-        logging.critical("failed %s %i", error, return_code)
-        raise ValueError(error)
+    output, _ = process.communicate()
 
-    return output.decode()
+    return output.decode(), process.returncode

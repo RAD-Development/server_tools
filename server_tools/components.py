@@ -36,7 +36,7 @@ def zpool_tests(pool_names: Sequence[str], zpool_capacity_threshold: int = 90) -
         if pool.capacity >= zpool_capacity_threshold:
             errors.append(f"{pool.name} is low on space")
 
-    upgrade_status = bash_wrapper("zpool upgrade")
+    upgrade_status, _ = bash_wrapper("zpool upgrade")
     if not search(r"Every feature flags pool has all supported and requested features enabled.", upgrade_status):
         errors.append("ZPool out of date")
 
@@ -49,7 +49,7 @@ def systemd_tests(service_names: Sequence[str]) -> list[str] | None:
 
     errors: list[str] = []
     for service_name in service_names:
-        service_status = bash_wrapper(f"systemctl is-active {service_name}")
+        service_status, _ = bash_wrapper(f"systemctl is-active {service_name}")
         if service_status != "active":
             errors.append(f"{service_name} is {service_status}")
 

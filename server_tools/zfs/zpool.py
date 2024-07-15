@@ -34,9 +34,9 @@ class Zpool:
             "size",
         )
 
-        raw_pool_data = bash_wrapper(f"zpool list {name} -pH -o {','.join(options)}").strip()
+        raw_pool_data, _ = bash_wrapper(f"zpool list {name} -pH -o {','.join(options)}")
 
-        pool_data = {option: raw_pool_data.split("\t")[index] for index, option in enumerate(options)}
+        pool_data = {option: raw_pool_data.strip().split("\t")[index] for index, option in enumerate(options)}
 
         self.name = name
 

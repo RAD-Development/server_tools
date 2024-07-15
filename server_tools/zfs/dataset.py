@@ -86,9 +86,9 @@ class Dataset:
             "xattr",
         )
 
-        raw_dataset_data = bash_wrapper(f"zfs list {name} -pH -o {','.join(options)}").strip()
+        raw_dataset_data, _ = bash_wrapper(f"zfs list {name} -pH -o {','.join(options)}")
 
-        dataset_data = {option: raw_dataset_data.split("\t")[index] for index, option in enumerate(options)}
+        dataset_data = {option: raw_dataset_data.strip().split("\t")[index] for index, option in enumerate(options)}
 
         self.aclinherit = dataset_data["aclinherit"]
         self.aclmode = dataset_data["aclmode"]
@@ -154,12 +154,12 @@ class Dataset:
             "written",
         )
 
-        raw_snapshots = bash_wrapper(f"zfs list -t snapshot -pH -o {','.join(options)}").strip()
+        raw_snapshots, _ = bash_wrapper(f"zfs list -t snapshot -pH -o {','.join(options)}")
 
         if raw_snapshots == "":
             return None
 
-        return [Snapshot(raw_snapshot, options) for raw_snapshot in raw_snapshots.split("\n")]
+        return [Snapshot(raw_snapshot, options) for raw_snapshot in raw_snapshots.strip().split("\n")]
 
     def create_snapshot(self, snapshot_name: str) -> None:
         """Creates a zfs snapshot.
