@@ -50,8 +50,8 @@ def systemd_tests(service_names: Sequence[str]) -> list[str] | None:
     errors: list[str] = []
     for service_name in service_names:
         service_status, _ = bash_wrapper(f"systemctl is-active {service_name}")
-        if service_status != "active":
-            errors.append(f"{service_name} is {service_status}")
+        if service_status != "active\n":
+            errors.append(f"{service_name} is {service_status.strip()}")
 
     return errors
 

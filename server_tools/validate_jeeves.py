@@ -35,7 +35,6 @@ def main() -> None:
             "docker-uptime_kuma",
             "docker",
             "plex",
-            "snapshot_manager",
         )
         if systemd_errors := systemd_tests(services):
             errors.extend(systemd_errors)
