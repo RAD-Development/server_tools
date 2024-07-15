@@ -21,6 +21,7 @@ pytest-xdist = "*"
 [tool.poetry.scripts]
 validate_jeeves = "server_tools.validate_jeeves:main"
 validate_jeevesjr = "server_tools.validate_jeevesjr:main"
+validate_palatine_hill = "server_tools.validate_palatine_hill:main"
 
 [build-system]
 requires = ["poetry-core"]
