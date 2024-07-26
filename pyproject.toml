@@ -12,11 +12,13 @@ python = "^3.12"
 requests = "*"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "*"
+mypy = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-xdist = "*"
+ruff = "*"
+types-requests = "*"
 
 [tool.poetry.scripts]
 validate_jeeves = "server_tools.validate_jeeves:main"
