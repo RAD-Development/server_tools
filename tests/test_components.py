@@ -91,7 +91,7 @@ def test_systemd_tests_multiple_pass(mocker: MockerFixture) -> None:
 def test_systemd_tests_fail(mocker: MockerFixture) -> None:
     """test_systemd_tests_fail."""
     mocker.patch("server_tools.components.bash_wrapper", return_value=("inactive\n", ""))
-    errors = systemd_tests(("docker",))
+    errors = systemd_tests(("docker",), max_retries=5)
     assert errors == ["docker is inactive"]
 
 
