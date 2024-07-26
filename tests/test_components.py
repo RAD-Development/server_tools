@@ -66,7 +66,7 @@ def test_systemd_tests() -> None:
 
 def test_systemd_tests_multiple_negative_retries() -> None:
     """test_systemd_tests_fail."""
-    errors = systemd_tests(("docker",))
+    errors = systemd_tests(("docker",), max_retries=-1, retry_delay_secs=-1)
     assert errors == []
 
 
