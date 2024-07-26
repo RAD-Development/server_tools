@@ -39,6 +39,7 @@
     "radarr",
     "refquota",
     "refreservation",
+    "retryable",
     "sharenfs",
     "snapdir",
     "sonarr",

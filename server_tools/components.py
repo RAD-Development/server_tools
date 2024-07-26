@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import logging
+from copy import copy
 from os import environ
 from re import search
+from time import sleep
 from typing import TYPE_CHECKING
 
 from requests import post
@@ -43,17 +45,54 @@ def zpool_tests(pool_names: Sequence[str], zpool_capacity_threshold: int = 90) -
     return errors
 
 
-def systemd_tests(service_names: Sequence[str]) -> list[str] | None:
-    """Test a systemd service."""
+# server_tools/components.py                  50      1     20      2    96%   71->74, 89
+def systemd_tests(
+    service_names: Sequence[str],
+    max_retries: int = 3,
+    retry_delay_secs: int = 1,
+    retryable_statuses: Sequence[str] | None = None,
+) -> list[str] | None:
+    """Tests a systemd services.
+
+    Args:
+        service_names (Sequence[str]): A list of service names to test.
+        max_retries (int, optional): The maximum number of retries. Defaults to 3.
+        retry_delay_secs (int, optional): The delay between retries in seconds. Defaults to 1.
+        the delay is doubled each retry.
+        retryable_statuses (Sequence[str] | None, optional): A list of retryable statuses. Defaults to None.
+
+    Returns:
+        list[str] | None: A list of errors if any.
+    """
     logging.info("Testing systemd service")
 
-    errors: list[str] = []
-    for service_name in service_names:
-        service_status, _ = bash_wrapper(f"systemctl is-active {service_name}")
-        if service_status != "active\n":
-            errors.append(f"{service_name} is {service_status.strip()}")
+    max_retries = max(max_retries, 1)
+    last_try = max_retries - 1
 
-    return errors
+    if retryable_statuses is None:
+        retryable_statuses = ("inactive\n", "activating\n")
+
+    service_names_set = set(service_names)
+
+    errors: set[str] = set()
+    for retry in range(max_retries):
+        service_names_to_test = copy(service_names_set)
+        for service_name in service_names_to_test:
+            service_status, _ = bash_wrapper(f"systemctl is-active {service_name}")
+            if service_status in retryable_statuses and retry < last_try:
+                logging.info(f"Retrying {service_name} in {retry + 1} of {max_retries}")
+                continue
+            if service_status != "active\n":
+                service_names_set.remove(service_name)
+                errors.add(f"{service_name} is {service_status.strip()}")
+
+        if not service_names_set:
+            break
+
+        sleep(retry_delay_secs)
+        retry_delay_secs *= 2
+
+    return list(errors)
 
 
 def discord_notification(username: str, errors: Sequence[str]) -> None:

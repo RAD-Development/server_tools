@@ -64,6 +64,26 @@ def test_systemd_tests() -> None:
     assert errors == []
 
 
+def test_systemd_tests_multiple_negative_retries() -> None:
+    """test_systemd_tests_fail."""
+    errors = systemd_tests(("docker",))
+    assert errors == []
+
+
+def test_systemd_tests_multiple_pass(mocker: MockerFixture) -> None:
+    """test_systemd_tests_fail."""
+    mocker.patch(
+        "server_tools.components.bash_wrapper",
+        side_effect=[
+            ("inactive\n", ""),
+            ("activating\n", ""),
+            ("active\n", ""),
+        ],
+    )
+    errors = systemd_tests(("docker",), retryable_statuses=("inactive\n", "activating\n"))
+    assert errors == []
+
+
 def test_systemd_tests_fail(mocker: MockerFixture) -> None:
     """test_systemd_tests_fail."""
     mocker.patch("server_tools.components.bash_wrapper", return_value=("inactive\n", ""))
