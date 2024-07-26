@@ -80,7 +80,11 @@ def test_systemd_tests_multiple_pass(mocker: MockerFixture) -> None:
             ("active\n", ""),
         ],
     )
-    errors = systemd_tests(("docker",), retryable_statuses=("inactive\n", "activating\n"))
+    errors = systemd_tests(
+        ("docker",),
+        retryable_statuses=("inactive\n", "activating\n"),
+        valid_statuses=("active\n",),
+    )
     assert errors == []
 
 
