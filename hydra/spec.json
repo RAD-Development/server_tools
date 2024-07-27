@@ -12,23 +12,23 @@
     "type": 0,
     "inputs": {
       "nixexpr": {
-        "value": "https://github.com/RAD-Development/RAD-templates main",
+        "value": "https://github.com/RAD-Development/server_tools main",
         "type": "git",
         "emailresponsible": false
       },
       "nixpkgs": {
-        "value": "https://github.com/NixOS/nixpkgs nixos-unstable-small",
+        "value": "https://github.com/NixOS/nixpkgs nixos-unstable",
         "type": "git",
         "emailresponsible": false
       },
       "pulls": {
         "type": "githubpulls",
-        "value": "RAD-Development RAD-templates",
+        "value": "RAD-Development server_tools",
         "emailresponsible": false
       },
       "branches": {
         "type": "github_refs",
-        "value": "RAD-Development RAD-templates heads -",
+        "value": "RAD-Development server_tools heads -",
         "emailresponsible": false
       }
     }
