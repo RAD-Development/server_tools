@@ -60,5 +60,8 @@
           program = "${self.packages.server_tools}/bin/validate_jeeves";
         };
       }
-    );
+    )
+    // {
+      hydraJobs = import ./hydra/jobs.nix { inherit (self) inputs outputs; };
+    };
 }
