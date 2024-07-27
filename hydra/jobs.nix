@@ -14,6 +14,6 @@ in
 # getCfg = _: cfg: cfg.config.system.build.toplevel;
 {
   # hosts = lib.mapAttrs getCfg outputs.nixosConfigurations;
-  inherit (outputs) devShells checks formatter;
+  inherit (outputs) devShells;
   packages = lib.mapAttrs filterValidPkgs outputs.packages;
 }

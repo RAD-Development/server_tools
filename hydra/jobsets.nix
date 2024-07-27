@@ -19,7 +19,7 @@ let
 
   prs = readJSONFile pulls;
   refs = readJSONFile branches;
-  repo = "RAD-Development/RAD-templates";
+  repo = "RAD-Development/server_tools";
 
   # template for creating a job
   makeJob =
