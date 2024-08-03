@@ -34,6 +34,7 @@ def main() -> None:
             "docker-uptime_kuma",
             "docker",
             "plex",
+            "sync_mirror",
         )
         if systemd_errors := systemd_tests(services):
             errors.extend(systemd_errors)
