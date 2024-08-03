@@ -23,6 +23,7 @@ def main() -> None:
             "docker-cloud_flare_tunnel",
             "docker-haproxy",
             "docker-uptime_kuma",
+            "sync_mirror",
         )
 
         if systemd_errors := systemd_tests(services):
